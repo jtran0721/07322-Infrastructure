@@ -1,0 +1,29 @@
+provider "aws" {
+  region = "ap-southeast-2"
+
+}
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+
+module "vpc" {
+    source  = "./modules/vpc"
+    
+    prod_vpc_cidrs = var.prod_vpc_cdirs
+    infra_vpc_cidrs = var.infra_vpc_cdirs
+    infra_priv = var.infra_priv
+    prod_second_cidr = var.prod_second_cdir
+    infra_pub = var.infra_pub
+    prod_priv01 = var.prod_priv01
+    prod_priv02 = var.prod_priv02
+    prod_priv03 = var.prod_priv03
+    prod_priv04 = var.prod_priv04
+    prod_priv05 = var.prod_priv05
+} 
+
+module "vpc-peering" {
+    source = "./modules/vpc-peering"
+
+    vpc_id = var.default_vpc
+    peer_vpc_id = var.default_vpc
+    
+}
